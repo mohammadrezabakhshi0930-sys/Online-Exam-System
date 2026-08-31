@@ -1,0 +1,104 @@
+﻿@model IEnumerable<ExamQTypesShowDTO>
+@{
+    ViewBag.Title = "سوالات آزمون";
+}
+@section Styles{
+    <link href="~/Static/Css/ExamQuestion.css" rel="stylesheet" />
+}
+<div class="exam-questions-container">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert-box @(TempData["MessageType"]?.ToString() ?? "info")">
+            <div class="alert-content">
+                <i class="icon-alert"></i>
+                <span>@TempData["Message"]</span>
+            </div>
+            <button type="button" class="close-alert" onclick="this.parentElement.style.display='none';">&times;</button>
+        </div>
+    }
+    <div class="exam-header-card">
+        <h2>سوالات و قوانین ثبت شده برای آزمون</h2>
+        <a href="/ExamQuestions/AddTypes?IdExam=@ViewBag.IdExam" class="btn-primary-add">+ افزودن سوال یا دسته جدید</a>
+    </div>
+
+    <div class="section-card">
+        <h3 class="section-title"><i class="icon-folder"></i> سوالات تصادفی از دسته‌بندی‌ها</h3>
+        <div class="table-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>نام دسته‌بندی</th>
+                        <th>تعداد سوالات رندوم</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Where(x => x.Count.HasValue))
+                    {
+                        <tr>
+                            <td data-label="نام دسته‌بندی"><strong>@item.NameCategory</strong></td>
+                            <td data-label="تعداد سوالات">@item.Count</td>
+                            <td data-label="عملیات">
+                                <button type="button" onclick="DeleteType('@item.Id')" class="btn-delete-small">حذف</button>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any(x => x.Count.HasValue))
+                    {
+                        <tr>
+                            <td colspan="3" class="empty-state">هیچ قانون دسته‌بندی ثبت نشده است.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3 class="section-title"><i class="icon-file-text"></i> سوالات اختصاصی انتخاب شده</h3>
+        <div class="table-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>متن سوال</th>
+                        <th>دسته بندی</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Where(x => !x.Count.HasValue))
+                    {
+                        <tr>
+                            <td data-label="متن سوال" class="text-ellipsis" title="@item.TextQuestion">@item.TextQuestion</td>
+                            <td data-label="دسته بندی"><span class="cat-badge">@item.NameCategory</span></td>
+                            <td data-label="عملیات">                                
+                             <button type="button" onclick="DeleteType('@item.Id')" class="btn-delete-small">حذف</button>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any(x => !x.Count.HasValue))
+                    {
+                        <tr>
+                            <td colspan="3" class="empty-state">هیچ سوال تکی انتخاب نشده است.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <p id="confirmText">آیا از حذف این نوع سوال اطمینان دارید؟</p>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 20px;">
+            <button type="button" onclick="ConfirmDelete()" class="closeModal" style="background: #c50000;">بله، حذف شود</button>
+            <button type="button" onclick="CloseConfirmModal()" class="closeModal" style="background: #6c757d;">خیر</button>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script src="~/Static/Js/DetailsTypes.js">       
+    </script>
+}

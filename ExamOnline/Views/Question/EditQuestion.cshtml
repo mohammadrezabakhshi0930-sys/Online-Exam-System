@@ -1,0 +1,103 @@
+﻿@model QuestionEditDTO
+@{
+    ViewBag.Title = "ویرایش سوال";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/Static/Css/CreateQuestion.css" />
+}
+<div class="custom-container">
+    <h2 class="form-header">ویرایش سوال</h2>
+
+    <form asp-controller="Question" asp-action="EditQuestion" method="post" id="questionForm">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger-summary" })
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.TextQuestion)
+            @Html.TextAreaFor(m => m.TextQuestion, new { @class = "input-control", rows = "3" })
+            @Html.ValidationMessageFor(m => m.TextQuestion, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Point)
+                @Html.EditorFor(m => m.Point, new { htmlAttributes = new { @class = "input-control", type = "number" } })
+                @Html.ValidationMessageFor(m => m.Point, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.CategoryId)
+                <select name="CategoryId" id="CategoryId" class="input-control">
+                    <option value="">-- انتخاب کنید --</option>
+                    @if (ViewBag.ListCategory != null)
+                    {
+                        foreach (var item in ViewBag.ListCategory)
+                        {
+                            bool isSelected = Model != null && Model.CategoryId == item.Id;
+
+                            <option value="@item.Id" selected="@(Model != null && Model.CategoryId == item.Id)">
+                                @item.Name
+                            </option>
+                        }
+                    }
+                </select>
+                @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <div class="checkbox-row">
+            <div class="checkbox-group">
+                @Html.CheckBoxFor(m => m.IsActive)
+                @Html.LabelFor(m => m.IsActive)
+            </div>
+
+            <div class="checkbox-group">
+                @Html.CheckBoxFor(m => m.IsDescriptiveQuestion, new { id = "chkIsDescriptive" })
+                @Html.LabelFor(m => m.IsDescriptiveQuestion)
+            </div>
+        </div>
+
+        <div id="descriptiveSection" class="form-group" style="display:none;">
+            @Html.LabelFor(m => m.CorrectAnswer)
+            @Html.TextAreaFor(m => m.CorrectAnswer, new { @class = "input-control", rows = "3", id = "txtCorrectAnswer" })
+            @Html.ValidationMessageFor(m => m.CorrectAnswer, "", new { @class = "text-danger" })
+        </div>
+
+        <div id="multipleChoiceSection" class="form-group">
+            <div class="options-header">
+                <label>گزینه‌های تستی</label>
+                <button type="button" id="btnAddOption" class="btn-add-option">افزودن گزینه</button>
+            </div>
+            
+            <div id="optionsWrapper">
+                @if (Model.Answer != null && Model.Answer.Any())
+                {
+                    foreach (var optionText in Model.Answer)
+                    {
+                        <div class="option-row">
+                            <input type="radio" name="CorrectOptionRadio" class="correct-radio" @(optionText == Model.AnswerIsTrue ? "checked" : "") required />
+                            <input type="text" name="Answer" class="input-control option-input" value="@optionText" required />
+                            <button type="button" class="btn-delete-option" onclick="removeOption(this)">حذف</button>
+                        </div>
+                    }
+                }
+            </div>
+            <input type="hidden" name="AnswerIsTrue" id="hfCorrectAnswer" value="@Model.AnswerIsTrue" />
+        </div>
+
+        <button type="submit" class="btn-submit">ذخیره تغییرات</button>
+    </form>
+
+</div>
+
+@section Scripts {
+    <script src="~/Static/Js/CreateQuestion.js"></script>
+    <script>
+        $(document).ready(function() {
+             $('#chkIsDescriptive').change(); 
+        });
+    </script>
+}

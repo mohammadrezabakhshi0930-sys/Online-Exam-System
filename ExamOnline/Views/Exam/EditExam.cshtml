@@ -1,0 +1,111 @@
+﻿@model ExamEditDTO
+
+@{
+    ViewBag.Title = "جزئیات امتحان";
+}
+@section Styles{
+    <link href="~/Static/Css/EditExam.css" rel="stylesheet" />
+}
+<div class="edit-container">
+    <div class="edit-card">
+        <div class="form-header">
+            <h1 class="form-title">📝 ویرایش اطلاعات آزمون</h1>
+        </div>
+
+        <form asp-action="EditExam" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-bottom: 1.5rem; font-weight: bold;"></div>
+
+            <div class="form-grid">
+                
+                <div class="form-group full-width">
+                    <label asp-for="Title">عنوان آزمون</label>
+                    <input asp-for="Title" class="form-control" placeholder="عنوان آزمون را وارد کنید..." />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StartExam">تاریخ و زمان شروع</label>
+                    <input asp-for="StartExam" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="StartExam" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EndExam">تاریخ و زمان پایان</label>
+                    <input asp-for="EndExam" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="EndExam" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TimeExam">مدت زمان آزمون (دقیقه)</label>
+                    <input asp-for="TimeExam" type="number" min="1" class="form-control" />
+                    <span asp-validation-for="TimeExam" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="MaxScore">بارم/نمره کل</label>
+                    <input asp-for="MaxScore" type="number" min="1" class="form-control" />
+                    <span asp-validation-for="MaxScore" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PassScore">نمره قبولی</label>
+                    <input asp-for="PassScore" type="number" min="0" class="form-control" placeholder="مثال: ۱۰" />
+                    <span asp-validation-for="PassScore" class="text-danger"></span>
+                </div>
+
+                <div class="form-group full-width">
+                    <label asp-for="Description">توضیحات آزمون</label>
+                    <textarea asp-for="Description" class="form-control" placeholder="توضیحات یا قوانین آزمون را بنویسید..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="switch-group">
+                        <label asp-for="RandomizeQuestion">تصادفی‌سازی سوالات</label>
+                        <label class="switch">
+                            <input type="checkbox" asp-for="RandomizeQuestion" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="switch-group">
+                        <label asp-for="RandomizeAnswerOption">تصادفی‌سازی گزینه‌ها</label>
+                        <label class="switch">
+                            <input type="checkbox" asp-for="RandomizeAnswerOption" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="switch-group">
+                        <label asp-for="ShowResultScore">نمایش نمره به کاربر</label>
+                        <label class="switch">
+                            <input type="checkbox" asp-for="ShowResultScore" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="switch-group">
+                        <label asp-for="HasCertificate">ارائه گواهی‌نامه قبولی</label>
+                        <label class="switch">
+                            <input type="checkbox" asp-for="HasCertificate" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="@Url.Action("Details", new { id = Model.Id })" class="btn btn-cancel">انصراف</a>
+                <button type="submit" class="btn btn-submit">ذخیره تغییرات</button>
+            </div>
+        </form>
+    </div>
+</div>

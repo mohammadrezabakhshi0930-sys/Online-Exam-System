@@ -1,0 +1,71 @@
+﻿@model CategoryQuestionsDTO
+@{
+    ViewBag.Title = "سوالات دسته بندی";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/Static/Css/Question.css" />
+}
+<div class="table-wrapper">
+    <div class="Div-TableItems">
+        <div class="table-header-1">
+            <h3>سوالات دسته بندی </h3>
+        </div>
+        <div class="table-header">
+            <div class="table-title"> @Model.CategoryName دسته بندی</div>
+        </div>
+        <div id="body_Result">
+            <table>
+                <thead>
+                    <tr>
+                        <th>متن سوالات (خلاصه) </th>
+                        <th>وضعیت</th>
+                        <th>نمره</th>
+                        <th>نوع</th>
+                        <th>تاریخ ایجاد</th>
+                        <th> عملیات</th>
+                    </tr>
+                </thead>
+                @if (Model.Questions == null)
+                {
+                    <caption>نتیجه ای یافت نشد</caption>
+                }
+                else
+                {
+                    <tbody>
+                        @foreach (QuestionShowDTO temp in Model.Questions!)
+                        {
+                            <tr class="@(temp.IsActive ? "row-active" : "row-inactive")">
+                                <td data-label="متن سوالات (خلاصه) " title="@temp.TextQuestion">@temp.TextQuestion</td>
+                                <td data-label="وضعیت" title="@temp.IsActive">@((temp.IsActive) ? "فعال" : "غیرفعال")</td>
+                                <td data-label="نمره" title="@temp.Point">@temp.Point</td>
+                                <td data-label="نوع" title="@temp.QuestionType">@((temp.QuestionType) ? "تشریحی" : "تستی")</td>
+                                <td data-label="تاریخ ایجاد" title="@temp.DateCreate">@temp.DateCreate.ToShortDateString()</td>
+                                <td data-label="عملیات">
+                                    <button onclick="DeleteQuestionCategory('@temp.Id')" class="submit-btn-a" style="background-color:orange">حذف از دسته بندی</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <p id="confirmText">آیا از حذف این  سوال از دسته‌بندی اطمینان دارید؟</p>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 20px;">
+            <button type="button" onclick="ConfirmDelete()" class="closeModal" style="background: #c50000;">بله، حذف شود</button>
+            <button type="button" onclick="CloseConfirmModal()" class="closeModal" style="background: #6c757d;">خیر</button>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="/Static/Js/QuestionCategory.js"></script>
+}
+

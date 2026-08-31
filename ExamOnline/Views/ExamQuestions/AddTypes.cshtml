@@ -1,0 +1,89 @@
+﻿@model QuestinsTypesEXDTO?
+@{
+    var categories = ViewBag.ListCategory as List<CategoryListDTO> ?? new List<CategoryListDTO>();
+    var questions = ViewBag.ListQuesion as List<QuestinListDTO> ?? new List<QuestinListDTO>();
+    ViewBag.Title = "تعیین سوالات آزمون";
+}
+@section Styles{
+    <link href="~/Static/Css/ExamQuestion.css" rel="stylesheet" />
+}
+<div class="exam-questions-container">
+    <div class="exam-header-card">
+        <h2>افزودن سوال یا دسته به آزمون</h2>
+        <a href="/ExamQuestions/Details/@ViewBag.Id" class="btn-secondary-back">بازگشت به لیست</a>
+    </div>
+
+    <form asp-action="AddTypes" method="post">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="IdExam" value="@ViewBag.Id" />
+
+        @for (int i = 0; i < questions.Count; i++)
+        {
+            <input type="hidden" name="QuestionSelect.Index" value="@i" />
+        }
+
+        <div class="grid-container">
+            <div class="section-card">
+                <h3 class="section-title"><i class="icon-search"></i> انتخاب تک سوال</h3>
+                <div class="form-group">
+                    <label>جستجو و فیلتر سوالات:</label>
+                    <input type="text" id="qSearch" placeholder="کلمه‌ای از متن سوال را بنویسید..." onkeyup="filterList()">
+                </div>
+
+                <div class="scroll-selection-box" id="questionsList">
+                    @for (int i = 0; i < questions.Count; i++)
+                    {
+                        var q = questions[i];
+                        <div class="selection-item q-item-row">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="QuestionSelect[@i].IdQuestion" value="@q.Id" class="q-checkbox" onchange="toggleQuestionIndex(this)" />
+                                <input type="hidden" name="QuestionSelect[@i].IdExam" value="@ViewBag.Id" disabled class="q-exam-id" />
+                                <span class="checkmark"></span>
+                                <span class="q-text" title="@q.TextQuestion">@q.TextQuestion</span>
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3 class="section-title"><i class="icon-plus"></i> تعریف قانون دسته بندی (رندوم)</h3>
+
+                <div class="form-group">
+                    <label>انتخاب دسته بندی:</label>
+                    <select id="catSelect" class="form-control">
+                        <option value="">-- انتخاب کنید --</option>
+                        @foreach (var cat in categories)
+                        {
+                            <option value="@cat.Id">@cat.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>تعداد سوال درخواستی:</label>
+                    <input type="number" id="catCount" class="form-control" min="1" placeholder="مثال: ۵">
+                </div>
+
+                <button type="button" class="btn-add-dynamic" onclick="addCategoryRuleRow()">+ افزودن این قانون به لیست ارسال</button>
+
+                <hr class="divider" />
+
+                <div class="dynamic-rules-wrapper">
+                    <h4>قوانین دسته‌ای در انتظار ثبت:</h4>
+                    <div id="dynamic-rules-list">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save-all">ذخیره نهایی تغییرات جدید</button>
+        </div>
+    </form>
+</div>
+@section Scripts{
+
+    <script src="~/Static/Js/AddTypes.js"></script>
+}

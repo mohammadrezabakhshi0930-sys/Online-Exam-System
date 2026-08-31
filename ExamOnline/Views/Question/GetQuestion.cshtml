@@ -1,0 +1,52 @@
+﻿
+@model IEnumerable<QuestionShowDTO>
+<table>
+    <thead>
+        <tr>
+            <th>متن سوالات (خلاصه) </th>
+            <th>وضعیت</th>
+            <th>نمره</th>
+            <th>نوع</th>
+            <th>تاریخ ایجاد</th>
+            <th> عملیات</th>
+        </tr>
+    </thead>
+    @if (!Model.Any())
+    {
+        <caption>نتیجه ای یافت نشد</caption>
+    }
+    else
+    {
+        <tbody>
+            @foreach (QuestionShowDTO temp in Model)
+            {
+                <tr class="@(temp.IsActive ? "row-active" : "row-inactive")">
+                    <td data-label="متن سوالات (خلاصه) " title="@temp.TextQuestion">@temp.TextQuestion</td>
+                    <td data-label="وضعیت" title="@temp.IsActive">@((temp.IsActive) ? "فعال" : "غیرفعال")</td>
+                    <td data-label="نمره" title="@temp.Point">@temp.Point</td>
+                    <td data-label="نوع" title="@temp.QuestionType">@((temp.QuestionType) ? "تشریحی" : "تستی")</td>
+                    <td data-label="تاریخ ایجاد" title="@temp.DateCreate">@temp.DateCreate.ToShortDateString()</td>
+                    <td data-label="عملیات">
+                        <a href="~/Question/EditQuestion/@temp.Id" class="submit-btn">ویرایش</a>
+                        <a href="~/Question/Details/@temp.Id" class="submit-btn">جزئیات</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+</table>
+<div class="pagination">
+    <button class="page-btn" onclick="ChangePage(@((ViewBag.Page) - 1),'~/Question/GetQuestion')" aria-label="صفحه قبل">
+        ‹
+    </button>
+
+    <div class="page-info">
+        <span>@ViewBag.Page</span>
+        <span class="divider">-</span>
+        <span>@ViewBag.CountPage</span>
+    </div>
+
+    <button class="page-btn" onclick="ChangePage(@((ViewBag.Page) + 1),'~/Question/GetQuestion')" aria-label="صفحه بعد">
+        ›
+    </button>
+</div>

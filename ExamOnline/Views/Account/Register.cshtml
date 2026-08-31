@@ -1,0 +1,40 @@
+﻿@model RegisterDTO
+@{
+    ViewData["Title"] = "ثبت نام در سایت";
+    Layout = "_LayoutAuth";
+}
+
+
+    <h2>ایجاد حساب کاربری</h2>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @class = "input-control", placeholder = "نام و نام خانوادگی" })
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName, new { @class = "input-control", placeholder = "نام کاربری" })
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "input-control", placeholder = "••••••••" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn-submit">ثبت‌نام</button>
+
+        <div class="link-footer">
+            قبلاً ثبت‌نام کرده‌اید؟ <a href="@Url.Action("Login")">وارد شوید</a>
+        </div>
+    }
+

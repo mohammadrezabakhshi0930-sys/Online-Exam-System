@@ -1,0 +1,138 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Vazirmatn', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    direction: rtl;
+    line-height: 1.6;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 15px; 
+    display: flex;
+    justify-content: center;
+}
+
+.auth-box {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px; 
+    animation: authSlideUp 0.4s ease-out;
+}
+
+    .auth-box h2 {
+        text-align: center;
+        color: #2d3436;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
+        color: #636e72;
+    }
+
+.input-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem; 
+    background-color: #f9f9f9;
+    transition: all 0.2s ease;
+    -webkit-appearance: none; 
+}
+
+    .input-control:focus {
+        outline: none;
+        border-color: #0984e3;
+        background-color: #fff;
+        box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.1);
+    }
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: #0984e3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+    .btn-submit:active {
+        transform: scale(0.98); 
+    }
+
+.text-danger {
+    color: #d63031;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    display: block;
+}
+
+.link-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.85rem;
+}
+
+@media (min-width: 576px) {
+    .auth-box {
+        padding: 40px; 
+        border-radius: 15px;
+    }
+
+        .auth-box h2 {
+            font-size: 1.75rem;
+        }
+}
+
+@keyframes authSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #636e72;
+    cursor: pointer;
+    user-select: none;
+}

@@ -1,0 +1,146 @@
+﻿:root {
+    --primary: #3498db;
+    --success: #27ae60;
+    --info: #8e44ad;
+    --bg: #f8f9fa;
+    --border: #dee2e6;
+}
+
+.correction-container {
+    max-width: 1100px;
+    margin: 20px auto;
+}
+
+.correction-header {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    border-right: 6px solid var(--primary);
+}
+
+.info-bar {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+    color: #555;
+}
+
+.q-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.q-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.q-content {
+    flex: 1;
+    padding: 25px;
+    min-width: 300px;
+}
+
+.q-grading {
+    width: 250px;
+    background: #fcfcfc;
+    border-right: 1px solid var(--border);
+    padding: 25px;
+}
+
+.q-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.q-text {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    line-height: 1.7;
+    background: #f1f2f6;
+}
+
+.correct-answer-box {
+    background: #f0f7ff;
+    border: 1px solid #cde4ff;
+    color: #2c3e50;
+}
+
+.student-answer-box {
+    background: #fff;
+    border: 2px solid #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 100px;
+    white-space: pre-wrap;
+}
+
+.input-group-custom {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.score-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+    .score-input:focus {
+        border-color: var(--primary);
+        outline: none;
+    }
+
+.btn-submit-score {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+    .btn-submit-score:hover {
+        background: #219150;
+    }
+
+.status-indicator {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.text-primary {
+    color: var(--primary);
+}
+
+.text-success {
+    color: var(--success);
+}
+
+.text-info {
+    color: var(--info);
+}
+
+@media (max-width: 768px) {
+    .q-grading {
+        width: 100%;
+        border-right: none;
+        border-top: 1px solid var(--border);
+    }
+}

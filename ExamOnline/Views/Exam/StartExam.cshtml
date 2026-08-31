@@ -1,0 +1,99 @@
+﻿@model DetailsStartExam
+
+@{
+    ViewBag.Title = "شرکت در آزمون";
+}
+
+@section Styles{
+   <link href="~/Static/Css/StartExam.css" rel="stylesheet" />
+}
+
+<div class="exam-intro-container">
+    
+    <div class="exam-card">
+        <div class="exam-header">
+            <h1>@Model.Title</h1>
+        </div>
+
+        <div class="exam-content">
+            <div class="exam-description">
+                <h3>توضیحات و قوانین آزمون</h3>
+                <div class="description-text">
+                    @Model.Description
+                </div>
+
+                <div class="rules-alert">
+                    <strong>توجه بسیار مهم قبل از شروع:</strong>
+                    <ul>
+                        <li>به محض کلیک روی دکمه شروع آزمون، زمان‌سنج فعال خواهد شد.</li>
+                        <li>بستن مرورگر یا قطع اتصال اینترنت، زمان آزمون را متوقف نمی‌کند.</li>
+                        <li>لطفاً از دکمه‌های ناوبری مرورگر (Back و Forward) در حین آزمون استفاده نکنید.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exam-sidebar">
+                <div class="info-row">
+                    <span class="info-label">مدت زمان آزمون:</span>
+                    <span class="info-value">@Model.DurationMinutes دقیقه</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">تعداد سوالات:</span>
+                    <span class="info-value">@Model.TotalQuestions سوال</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">نمره کل آزمون:</span>
+                    <span class="info-value">@Model.TotalScore امتیاز</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">حد نصاب قبولی:</span>
+                    <span class="info-value">@(Model.PassingScore == 0 ? "تعیین نشده":Model.PassingScore ) امتیاز</span>
+                </div>
+
+                <form asp-action="StartExamFinal" method="post">
+                    <input type="hidden" name="ExamId" value="@Model.ExamId" />
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert-error-box" style="margin-bottom: 1rem; background-color: #fef2f2; color: #991b1b; border: 1px solid #fee2e2;">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    @if (DateTime.Now < Model.StartExam)
+                    {
+                        <div class="alert-error-box" style="background-color: #eff6ff; color: #1e40af; border: 1px solid #dbeafe;">
+                            این آزمون هنوز آغاز نشده است.<br />
+                            <small>زمان شروع: @Model.StartExam.ToString("yyyy/MM/dd ساعت HH:mm")</small>
+                        </div>
+                        <button type="button" class="btn-start" style="background: #94a3b8; cursor: not-allowed;" disabled>
+                            غیر فعال (آزمون شروع نشده)
+                        </button>
+                    }
+                    else if (DateTime.Now > Model.EndExam)
+                    {
+                        <div class="alert-error-box">
+                            مهلت شرکت در این آزمون به پایان رسیده است.
+                        </div>
+                        <button type="button" class="btn-start" style="background: #94a3b8; cursor: not-allowed;" disabled>
+                            غیر فعال (پایان مهلت آزمون)
+                        </button>
+                    }
+                    else if (Model.AlreadyParticipated)
+                    {
+                        <div class="alert-error-box">
+                            شما قبلاً در این آزمون شرکت کرده‌اید و مجاز به شروع مجدد نیستید.
+                        </div>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn-start">
+                            شروع شرکت در آزمون
+                        </button>
+                    }
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

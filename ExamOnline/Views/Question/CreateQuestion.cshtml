@@ -1,0 +1,95 @@
+﻿@model QuestionCreateDTO
+
+@{
+    ViewBag.Title = "ایجاد سوال";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/Static/Css/CreateQuestion.css" />
+}
+
+<div class="custom-container">
+    <h2 class="form-header">ایجاد سوال جدید</h2>
+
+    @using (Html.BeginForm(new { id = "questionForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger-summary" })
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.TextQuestion)
+            @Html.TextAreaFor(m => m.TextQuestion, new { @class = "input-control", rows = "3" })
+            @Html.ValidationMessageFor(m => m.TextQuestion, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Point)
+                @Html.EditorFor(m => m.Point, new { htmlAttributes = new { @class = "input-control", type = "number" } })
+                @Html.ValidationMessageFor(m => m.Point, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.CategoryId)
+                <select name="CategoryId" id="CategoryId" class="input-control">
+                    <option value="">-- انتخاب کنید --</option>
+                    @if (ViewBag.ListCategory != null)
+                    {
+                        foreach (var item in ViewBag.ListCategory)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                </select>
+                @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="checkbox-row">
+            <div class="checkbox-group">
+                @Html.CheckBoxFor(m => m.IsActive)
+                @Html.LabelFor(m => m.IsActive)
+            </div>
+
+            <div class="checkbox-group">
+                @Html.CheckBoxFor(m => m.IsDescriptiveQuestion, new { id = "chkIsDescriptive" })
+                @Html.LabelFor(m => m.IsDescriptiveQuestion)
+            </div>
+        </div>
+
+        <div id="descriptiveSection" class="form-group" style="display:none;">
+            @Html.LabelFor(m => m.CorrectAnswer)
+            @Html.TextAreaFor(m => m.CorrectAnswer, new { @class = "input-control", rows = "3", id = "txtCorrectAnswer" })
+            @Html.ValidationMessageFor(m => m.CorrectAnswer, "", new { @class = "text-danger" })
+        </div>
+
+        <div id="multipleChoiceSection" class="form-group">
+            <div class="options-header">
+                <label>گزینه‌های تستی و انتخاب گزینه صحیح</label>
+                <button type="button" id="btnAddOption" class="btn-add-option">افزودن گزینه</button>
+            </div>
+
+            <div id="optionsWrapper">
+                <div class="option-row">
+                    <input type="radio" name="CorrectOptionRadio" class="correct-radio" required checked />
+                    <input type="text" name="Answer" class="input-control option-input" placeholder="متن گزینه اول..." required />
+                    <button type="button" class="btn-delete-option" onclick="removeOption(this)">حذف</button>
+                </div>
+                <div class="option-row">
+                    <input type="radio" name="CorrectOptionRadio" class="correct-radio" required />
+                    <input type="text" name="Answer" class="input-control option-input" placeholder="متن گزینه دوم..." required />
+                    <button type="button" class="btn-delete-option" onclick="removeOption(this)">حذف</button>
+                </div>
+            </div>
+            <input type="hidden" value="" name="AnswerIsTrue" id="hfCorrectAnswer" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">ثبت سوال</button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/Static/Js/CreateQuestion.js">
+    </script>
+}

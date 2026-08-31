@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - پنل کاربری</title>
+    <link rel="stylesheet" href="~/Static/Css/Layout.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    @RenderSection("Styles",false);
+
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="panel-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                ExamOnline
+            </div>
+            <ul class="sidebar-menu">
+                
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a href="~/Question/Index"><i class="fas fa-home"></i> بانک سوالات</a></li>
+                    <li><a href="~/Exam/Index"><i class="fas fa-book"></i> آزمون ها</a></li>
+                    <li><a href="~/Category/Index"><i class="fas fa-certificate"></i> دسته بندی ها</a></li>
+                }
+                @if (User.IsInRole("SuperAdmin"))
+                {
+                    <li><a href="/User/Index"><i class="fas fa-user"></i> کاربران</a></li>
+                }
+                <li><a href="/Exam/GetMyExam"><i class="fas fa-book"></i> آزمون‌های من</a></li>
+                <li><a href="#"><i class="fas fa-certificate"></i> گواهینامه‌ها</a></li>
+                <li><a href="~/Account/ChangePassword"><i class="fas fa-user"></i> تغییر رمز عبور</a></li>
+                <li><a href="/Account/LogOut"><i class="fas fa-sign-out-alt"></i> خروج</a></li>
+                
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="panel-header">
+                <div class="toggle-btn" id="toggle-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="user-info">
+                    خوش آمدید، @User.Identity!.Name
+                </div>
+            </header>
+
+            <div class="content-body">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+    <div id="myAlertModal" class="modal">
+        <div class="modal-content">
+            <p id="alertText">پیام مورد نظر شما در اینجا نمایش داده می‌شود.</p>
+            <button type="button" class="closeModal" id="btnCloseModal">متوجه شدم</button>
+        </div>
+    </div>
+    <script src="~/Static/Js/Index.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

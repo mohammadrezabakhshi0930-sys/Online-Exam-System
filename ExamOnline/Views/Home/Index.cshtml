@@ -1,0 +1,14 @@
+﻿@if (TempData["SuccessMessage"] != null)
+{
+    <div class="custom-alert">
+        <span class="custom-alert-icon">✓</span>
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="custom-alert">
+        <span class="custom-alert-icon">✓</span>
+        @TempData["ErrorMessage"]
+    </div>
+}

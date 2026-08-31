@@ -1,0 +1,17 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build
+[Bb]in/
+[Oo]bj/
+
+# ASP.NET Core
+appsettings.Development.json
+
+# Rider
+.idea/
+
+# Logs
+*.log

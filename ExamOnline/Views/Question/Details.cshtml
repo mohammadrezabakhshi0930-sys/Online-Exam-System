@@ -1,0 +1,89 @@
+﻿@model QuestionDetailsDTO
+
+@{
+    ViewBag.Title = "جزئیات سوال";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Static/Css/DetaisQuestion.css" />
+}
+    <div class="details-container">
+        <div class="details-header">
+            <h2>جزئیات سوال</h2>
+            <span class="badge @(Model.IsActive ? "badge-active" : "badge-inactive")">
+                @(Model.IsActive ? "فعال" : "غیرفعال")
+            </span>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">دسته‌بندی:</span>
+                <span class="info-value">@(Model.CategoryName ?? "بدون دسته‌بندی")</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">بارم سوال:</span>
+                <span class="info-value">@Model.Point امتیاز</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">تاریخ ایجاد:</span>
+                <span class="info-value" dir="ltr">@Model.DateCreate.ToString("yyyy/MM/dd")</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">نوع سوال:</span>
+                <span class="info-value">@(Model.IsDescriptiveQuestion ? "تشریحی" : "تستی")</span>
+            </div>
+        </div>
+
+        <div class="question-text-box">
+            <h3>متن سوال:</h3>
+            <p>@Model.TextQuestion</p>
+        </div>
+
+        <div class="answers-section">
+            @if (Model.IsDescriptiveQuestion)
+            {
+                <h3>پاسخ صحیح (تشریحی):</h3>
+                <div class="correct-answer-box">
+                    @if (string.IsNullOrEmpty(Model.CorrectAnswer))
+                    {
+                        <span class="text-muted">پاسخی ثبت نشده است.</span>
+                    }
+                    else
+                    {
+                        <p>@Model.CorrectAnswer</p>
+                    }
+                </div>
+            }
+            else
+            {
+                <h3>گزینه‌های سوال:</h3>
+                <div class="options-list">
+                    @if (Model.AnswerShowDTOs != null && Model.AnswerShowDTOs.Any())
+                    {
+                        int index = 1;
+                        foreach (var option in Model.AnswerShowDTOs)
+                        {
+                            <div class="option-item @(option.IsTrue ? "option-correct" : "")">
+                                <span class="option-number">گزینه @index:</span>
+                                <span class="option-text">@option.Text</span>
+                                @if (option.IsTrue)
+                                {
+                                    <span class="correct-badge">پاسخ صحیح ✓</span>
+                                }
+                            </div>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">هیچ گزینه‌ای برای این سوال ثبت نشده است.</p>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="details-actions">
+            <a href="~/Question/Index" class="btn-back">بازگشت به لیست</a>
+        </div>
+    </div>
+

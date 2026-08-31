@@ -1,0 +1,269 @@
+﻿@model CertificateDetailsDTO
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گواهی‌نامه @Model.FullName</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .certificate-container {
+            position: relative;
+            width: 100%;
+            max-width: 850px;
+            background-color: #fff;
+            padding: 40px;
+            border: 15px double #c5a880;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background-image: radial-gradient(circle, #fdfbf7 60%, #f5eedc 100%);
+            overflow: hidden;
+        }
+
+            .certificate-container::before,
+            .certificate-container::after {
+                content: "";
+                position: absolute;
+                width: 30px;
+                height: 30px;
+                border: 2px solid #c5a880;
+            }
+
+            .certificate-container::before {
+                top: 15px;
+                right: 15px;
+                border-bottom: none;
+                border-left: none;
+            }
+
+            .certificate-container::after {
+                bottom: 15px;
+                left: 15px;
+                border-top: none;
+                border-right: none;
+            }
+
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .certificate-header h1 {
+                font-size: 28px;
+                color: #8c6239;
+                margin-bottom: 5px;
+            }
+
+            .certificate-header p {
+                font-size: 14px;
+                color: #777;
+            }
+
+        .certificate-body {
+            text-align: center;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+            .certificate-body p {
+                font-size: 16px;
+                color: #555;
+                margin-bottom: 15px;
+            }
+
+        .highlight-name {
+            display: block;
+            font-size: 26px;
+            color: #222;
+            font-weight: bold;
+            margin: 15px 0;
+            border-bottom: 2px dashed #c5a880;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 5px;
+            min-width: 200px;
+        }
+
+        .highlight-exam {
+            font-weight: bold;
+            color: #8c6239;
+        }
+
+        .certificate-meta {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(197, 168, 128, 0.08);
+            border-radius: 6px;
+            border: 1px solid rgba(197, 168, 128, 0.3);
+        }
+
+        .meta-item {
+            flex: 1 1 150px;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .meta-label {
+            font-size: 13px;
+            color: #777;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .signature-section {
+            text-align: center;
+            width: 150px;
+        }
+
+        .signature-line {
+            border-top: 1px solid #aaa;
+            margin-top: 40px;
+            padding-top: 5px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .badge {
+            width: 70px;
+            height: 70px;
+            background-color: #c5a880;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border: 4px double #fff;
+            text-align: center;
+        }
+
+        @@media (max-width: 600px) {
+            .certificate-container {
+                padding: 20px;
+                border-width: 8px;
+            }
+
+                .certificate-container::before, .certificate-container::after {
+                    display: none;
+                }
+
+            .certificate-header h1 {
+                font-size: 22px;
+            }
+
+            .highlight-name {
+                font-size: 20px;
+                min-width: 100%;
+            }
+
+            .certificate-meta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .meta-item {
+                margin: 5px 0;
+                border-bottom: 1px solid rgba(197, 168, 128, 0.2);
+                width: 100%;
+                padding-bottom: 5px;
+            }
+
+                .meta-item:last-child {
+                    border-bottom: none;
+                }
+
+            .certificate-footer {
+                flex-direction: column;
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="certificate-container">
+        <div class="certificate-header">
+            <h1>گواهی‌نامه پایان دوره</h1>
+            <p>Certificate of Achievement</p>
+        </div>
+
+        <div class="certificate-body">
+            <p>این گواهی‌نامه بدین‌وسیله به نشانه موفقیت به آقا/خانم:</p>
+            <span class="highlight-name">@Model.FullName</span>
+
+            <p>اهدا می‌گردد که با موفقیت آزمون <span class="highlight-exam">«@Model.ExamName»</span> را پشت سر گذاشته‌اند.</p>
+        </div>
+
+        <div class="certificate-meta">
+            <div class="meta-item">
+                <span class="meta-label">تاریخ صدور</span>
+                <span class="meta-value">@Model.IssueDate.ToString("yyyy/MM/dd")</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">نمره کسب شده</span>
+                <span class="meta-value">@Model.Score</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">نمره کل</span>
+                <span class="meta-value">@Model.TotalScore</span>
+            </div>
+        </div>
+
+        <div class="certificate-footer">
+            <div class="signature-section">
+                <div class="signature-line">امضای برگزارکننده</div>
+            </div>
+
+            <div class="badge">
+                <span>معتبر</span>
+            </div>
+
+            <div class="signature-section">
+                <div class="signature-line">مهر و امضای نهایی</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

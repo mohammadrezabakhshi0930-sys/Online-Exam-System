@@ -1,0 +1,66 @@
+﻿@model ExamUserCheckDTO
+@{
+    ViewBag.Title = "تصحیح سوالات";
+}
+@section Styles{
+    <link href="~/Static/Css/ExamCheckAnswer.css" rel="stylesheet" />
+}
+<div class="correction-container">
+    <div class="correction-header">
+        <h1>تصحیح سوالات تشریحی</h1>
+        <div class="info-bar">
+            <span>آزمون: <strong>@Model.ExamName</strong></span>
+            <span>دانشجو: <strong>@Model.Name</strong></span>
+        </div>
+    </div>
+    @if(Model.QuestionExam != null)
+    {
+        foreach (var item in Model.QuestionExam)
+        {
+            <div class="q-card">
+                <div class="q-body">
+                    <div class="q-content">
+                        <label class="q-label text-primary">صورت سوال:</label>
+                        <div class="q-text">@item.Question</div>
+
+                        <label class="q-label text-info">پاسخ صحیح (ثبت شده توسط طراح):</label>
+                        <div class="q-text correct-answer-box">
+                            @if (string.IsNullOrEmpty(item.QuestionAnswer))
+                            {
+                                <em class="text-muted">پاسخی برای این سوال ثبت نشده است.</em>
+                            }
+                            else
+                            {
+                                @item.QuestionAnswer
+                            }
+                        </div>
+
+                        <label class="q-label text-success">پاسخ دانشجو:</label>
+                        <div class="student-answer-box">
+                            @item.QuestionAnswerUser
+                        </div>
+                    </div>
+
+                    <div class="q-grading">
+                        <div class="sticky-grading">
+                            <label class="q-label">نمره (از @item.MaxScore)</label>
+                            <div class="input-group-custom">
+                                <input type="number" step="0.25" min="0" max="@item.MaxScore"
+                                       class="score-input" value="@item.AssignedScore"
+                                       data-answer-id="@item.IdUserAnswer">
+                                <button class="btn-submit-score" onclick="submitSingleScore(this)">ثبت</button>
+                            </div>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    
+</div>
+@section Scripts{
+    <script src="~/Static/Js/ExamCheckAnswer.js">
+    </script>
+}
+

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CategoryShowDTO>
+<table>
+    <thead>
+        <tr>
+            <th> نام دسته بندی</th>
+            <th>تاریخ ایجاد</th>
+            <th> عملیات</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (CategoryShowDTO temp in Model)
+        {
+            <tr>
+                <td data-label="نام دسته بندی " id="NameCategory-@temp.Id" title="@temp.CategoryName">@temp.CategoryName</td>
+                <td data-label="تاریخ ایجاد" title="@temp.DateCreate">@temp.DateCreate.ToShortDateString()</td>
+                <td data-label="عملیات">
+                    <button onclick="EditCategory('@temp.Id')" class="submit-btn-a">ویرایش</button>
+                    <button onclick="DeleteCategory('@temp.Id')" class="submit-btn-a">حذف</button>
+                    <a href="~/Category/QuestionCategory/@temp.Id" class="submit-btn-a">سوالات دسته بندی</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+<div class="pagination">
+    <button class="page-btn" onclick="ChangePage(@((ViewBag.Page) - 1),'~/Category/GetCategory')" aria-label="صفحه قبل">
+        ‹
+    </button>
+
+    <div class="page-info">
+        <span>@ViewBag.Page</span>
+        <span class="divider">-</span>
+        <span>@ViewBag.CountPage</span>
+    </div>
+
+    <button class="page-btn" onclick="ChangePage(@((ViewBag.Page) + 1),'~/Category/GetCategory')" aria-label="صفحه بعد">
+        ›
+    </button>
+</div>

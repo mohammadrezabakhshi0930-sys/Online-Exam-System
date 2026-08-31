@@ -1,0 +1,114 @@
+﻿@model ExamConductDTO
+
+@{
+    Layout = null; 
+}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برگزاری آزمون - @Model.ExamTitle</title>
+    <link rel="stylesheet" href="~/Static/Css/CheckQuestionExam.css" />
+</head>
+<body>
+
+    <div class="exam-container">
+
+        <main class="card">
+            <form id="questionForm" method="post" asp-action="SaveAnswers" asp-controller="Exam">
+                <input type="hidden" name="examUserId" value="@Model.ExamUserId" />
+                <input type="hidden" name="CurrentUserAnswerId" value="@Model.CurrentUserAnswerId" />
+                <input type="hidden" id="nextAnswerId" name="nextAnswerId" value="" />
+                <input type="hidden" id="isFinalSubmit" name="isFinalSubmit" value="true" disabled />
+
+                <div class="question-header">
+                    <span class="question-number">سوال @Model.CurrentQuestionIndex از @Model.TotalQuestions</span>
+                    <span style="font-size: 0.9rem; color: #6b7280;">@Model.ExamTitle</span>
+                </div>
+
+                <div class="question-text">
+                    @Model.QuestionText
+                </div>
+
+                @if (Model.IsDescriptive)
+                {
+                    <textarea name="UserAnswerText" class="descriptive-input" placeholder="پاسخ خود را در این بخش بنویسید...">@Model.UserAnswerText</textarea>
+                }
+                else
+                {
+                    <div class="options-list">
+                        @foreach (var option in Model.AnswerOptions)
+                        {
+                            <label class="option-item @(Model.UserAnswerText == option ? "selected" : "")">
+                                <input type="radio" name="UserAnswerText" value="@option"
+                                       @(Model.UserAnswerText == option ? "checked" : "") onclick="highlightOption(this)" />
+                                <span>@option</span>
+                            </label>
+                        }
+                    </div>
+                }
+
+                <div class="action-buttons">
+                    @if (Model.CurrentQuestionIndex > 1)
+                    {
+                        var prevId = Model.Steps.FirstOrDefault(s => s.Index == Model.CurrentQuestionIndex - 1)?.UserAnswerId;
+                        <button type="button" class="btn btn-secondary" onclick="submitAndGo('@prevId')">سوال قبلی</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;">سوال قبلی</button>
+                    }
+
+                    @if (Model.CurrentQuestionIndex < Model.TotalQuestions)
+                    {
+                        var nextId = Model.Steps.FirstOrDefault(s => s.Index == Model.CurrentQuestionIndex + 1)?.UserAnswerId;
+                        <button type="button" class="btn btn-primary" onclick="submitAndGo('@nextId')">سوال بعدی</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-danger" onclick="finishExam()">اتمام آزمون</button>
+                    }
+                </div>
+            </form>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card timer-box">
+                <div class="timer-title">زمان باقی‌مانده</div>
+                <div class="timer-clock" id="timer">--:--</div>
+            </div>
+
+            <div class="card">
+                <h3 style="font-size: 1rem; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">لیست سوالات</h3>
+                <div class="nav-grid">
+                    @foreach (var step in Model.Steps)
+                    {
+                        <button type="button"
+                                class="nav-btn @(step.UserAnswerId == Model.CurrentUserAnswerId ? "active" : "") @(step.IsAnswered ? "answered" : "")"
+                                onclick="submitAndGo('@step.UserAnswerId')">
+                            @step.Index
+                        </button>
+                    }
+                </div>
+            </div>
+        </aside>
+
+    </div>
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <p id="confirmText">آیا از اتمام آزمون اطمینان دارید؟</p>
+
+            <div style="display: flex; justify-content: center; gap: 12px; margin-top: 20px;">
+                <button type="button" onclick="ConfirmDelete()" class="closeModal" style="background: #c50000;">بله، پایان آزمون</button>
+                <button type="button" onclick="CloseConfirmModal()" class="closeModal" style="background: #6c757d;">خیر</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let remainingSeconds = parseInt('@Model.RemainingSeconds') || 0;        
+    </script>
+    <script src="~/Static/Js/CheckQuestion.js"></script>
+</body>
+</html>

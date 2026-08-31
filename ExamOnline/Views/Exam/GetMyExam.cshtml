@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MyExamDTO>
+@{
+    ViewBag.Title = " آزمون های من";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/Static/Css/Question.css" />
+}
+<div class="table-wrapper">
+    <div class="Div-TableItems">
+        <div class="table-header-1">
+            <h3>آزمون های من</h3>
+        </div>
+        <div class="table-header">
+            <div class="table-title"> آزمون </div>
+        </div>
+        <div id="body_Result">
+            <table>
+                <thead>
+                    <tr>
+                        <th>عنوان آزمون</th>
+                        <th>نمره کل</th>
+                        <th>تاریخ شروع</th>
+                        <th>تاریخ پایان</th>
+
+                        <th> عملیات</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (MyExamDTO temp in Model)
+                    {
+                        <tr>
+                            <td data-label="عنوان آزمون" title="@temp.Name">@temp.Name</td>
+                            <td data-label="نمره کسب شده" title="@temp.Score">@(temp.IsFinalScore? temp.Score: "منتظر تصحیح")</td>
+                            <td data-label="تاریخ شروع" title="@temp.DateStart">@temp.DateStart</td>
+                            <td data-label="تاریخ پایان" title="@temp.DateEnd">@temp.DateEnd</td>
+                            <td data-label="عملیات">
+
+                                <a href="/Exam/ResultExam?IdExam=@temp.Id" class="submit-btn-a">جزئیات</a>
+                                
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+

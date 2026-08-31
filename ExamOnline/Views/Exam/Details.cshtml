@@ -1,0 +1,122 @@
+﻿@model ExamDetailsDTO
+@{
+    ViewBag.Title = "جزئیات امتحان";
+}
+@section Styles{
+    <link href="~/Static/Css/ExamDetails.css" rel="stylesheet" />
+}
+
+<div class="exam-wrapper">
+
+    <div class="exam-card-header">
+        <div class="exam-title-row">
+            <h1 class="exam-title">@Model.Title</h1>
+            <span class="badge badge-category">مدت زمان: @Model.TimeExam دقیقه</span>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">@Model.Description</p>
+        }
+
+        <div class="exam-meta-grid">
+            <div class="meta-item">
+                <span class="meta-label">تاریخ شروع</span>
+                <span class="meta-value">@Model.StartExam.ToString("yyyy/MM/dd HH:mm")</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">تاریخ پایان</span>
+                <span class="meta-value">@Model.EndExam.ToString("yyyy/MM/dd HH:mm")</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">بارم کل / قبولی</span>
+                <span class="meta-value">@Model.MaxScore / @(Model.PassScore?.ToString() ?? "تعریف نشده")</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">گواهی‌نامه</span>
+                <span class="meta-value">@(Model.HasCertificate ? "دارد" : "ندارد")</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">ترتیب سوالات</span>
+                <span class="meta-value">@(Model.RandomizeQuestion ? "تصادفی" : "ثابت")</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">ترتیب گزینه‌ها</span>
+                <span class="meta-value">@(Model.RandomizeAnswerOption ? "تصادفی" : "ثابت")</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">نمایش نمره نهایی</span>
+                <span class="meta-value">@(Model.ShowResultScore ? "فعال" : "غیرفعال")</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        @if (Model.BeforeExam != null && Model.BeforeExam.Any())
+        {
+            <h2 class="section-title">📋 لیست سوالات طراحی شده (قبل از آزمون)</h2>
+            <div class="questions-container">
+                @foreach (var q in Model.BeforeExam)
+                {
+                    @if (!string.IsNullOrEmpty(q.TextQuestion))
+                    {
+                        <div class="question-box">
+                            <div class="q-meta-line">
+                                <span class="badge badge-category">دسته بندی: @(q.NameCategory ?? "عمومی")</span>
+                                <span class="badge badge-score">بارم: @(q.MaxScore?.ToString() ?? "0")</span>
+                            </div>
+                            <div class="q-text">@q.TextQuestion</div>
+                            @if (!string.IsNullOrEmpty(q.TextAnswer))
+                            {
+                                <div class="q-answer-box">
+                                    <div class="answer-title">پاسخ ثبت شده:</div>
+                                    <div>@q.TextAnswer</div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="question-box category-only-box">
+                            <div class="q-meta-line">
+                                <span class="badge" style="background-color: #e2e8f0; color: #475569;">تخصیص پویا</span>
+                                <span class="badge badge-score">تعداد سوال: @(q.Count ?? 0)</span>
+                            </div>
+                            <div class="q-text" style="font-size: 1rem; color: #475569;">
+                                سیستم به صورت خودکار تعداد <strong>@(q.Count ?? 0)</strong> سوال از دسته‌ی <strong>@(q.NameCategory ?? "تعریف نشده")</strong> انتخاب خواهد کرد.
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+        else if (Model.AfterExam != null && Model.AfterExam.Any())
+        {
+            <h2 class="section-title">📝 سوالات نهایی استفاده شده در آزمون (بعد از شروع)</h2>
+            <div class="questions-container">
+                @foreach (var q in Model.AfterExam)
+                {
+                    <div class="question-box">
+                        <div class="q-meta-line">
+                            <span class="badge badge-score">بارم: @q.MaxScore</span>
+                        </div>
+                        <div class="q-text">@q.TextQuestion</div>
+                        @if (!string.IsNullOrEmpty(q.TextAnswer))
+                        {
+                            <div class="q-answer-box">
+                                <div class="answer-title">پاسخ صحیح سیستم:</div>
+                                <div>@q.TextAnswer</div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="question-box" style="text-align: center; color: var(--text-muted); border-style: dashed;">
+                هنوز هیچ سوال یا دسته‌بندی برای این آزمون تنظیم نشده است.
+            </div>
+        }
+    </div>
+</div>

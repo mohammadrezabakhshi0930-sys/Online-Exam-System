@@ -1,0 +1,130 @@
+﻿@model ExamCreateDTO
+@section Styles{
+    <link href="~/Static/Css/CreateExam.css" rel="stylesheet" />
+}
+<div class="exam-wrapper" dir="rtl">
+    <div class="exam-card">
+        <div class="exam-header">
+            <h3><i class="fas fa-plus-circle"></i> ایجاد آزمون جدید</h3>
+            <span class="step-indicator">مرحله ۱: مشخصات کلی</span>
+        </div>
+
+        <form asp-action="CreateExam" method="post" class="exam-form">
+            <div asp-validation-summary="ModelOnly" class="error-summary"></div>
+
+            <div class="form-section">
+                <div class="form-group">
+                    <label asp-for="Title">عنوان آزمون <span class="required">*</span></label>
+                    <input asp-for="Title" class="custom-input" placeholder="مثال: کوییز فصل اول برنامه‌نویسی" />
+                    <span asp-validation-for="Title" class="error-text"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description">توضیحات آزمون</label>
+                    <textarea asp-for="Description" class="custom-input" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="error-text"></span>
+                </div>
+            </div>
+
+            <div class="form-grid-4">
+                <div class="form-group">
+                    <label asp-for="StartExam">تاریخ شروع</label>
+                    <input asp-for="StartExam" type="datetime-local" class="custom-input" />
+                    <span asp-validation-for="StartExam" class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndExam">تاریخ پایان</label>
+                    <input asp-for="EndExam" type="datetime-local" class="custom-input" />
+                    <span asp-validation-for="EndExam" class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TimeExam">مدت (دقیقه)</label>
+                    <input asp-for="TimeExam" type="number" class="custom-input text-center" />
+                    <span asp-validation-for="TimeExam" class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MaxScore">بارم کل</label>
+                    <input asp-for="MaxScore" type="number" class="custom-input text-center" />
+                    <span asp-validation-for="MaxScore" class="error-text"></span>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="options-box">
+                    <h4><i class="fas fa-cog"></i> تنظیمات نمایش</h4>
+                    <div class="toggle-group">
+                        <label class="switch">
+                            <input asp-for="RandomizeQuestion" type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <span>تصادفی‌سازی سوالات</span>
+                        <span asp-validation-for="RandomizeQuestion" class="error-text"></span>
+                    </div>
+                    <div class="toggle-group">
+                        <label class="switch">
+                            <input asp-for="RandomizeAnswerOption" type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <span>تصادفی‌سازی گزینه‌ها</span>
+                        <span asp-validation-for="RandomizeAnswerOption" class="error-text"></span>
+                    </div>
+                    <div class="toggle-group">
+                        <label class="switch">
+                            <input asp-for="ShowResultScore" type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <span>نمایش نمره به کاربر در پایان آزمون</span>
+                        <span asp-validation-for="ShowResultScore" class="error-text"></span>
+                    </div>
+                </div>
+
+                <div class="options-box">
+                    <h4><i class="fas fa-certificate"></i> قبولی و مدرک</h4>
+                    <div class="toggle-group">
+                        <label class="switch">
+                            <input asp-for="HasCertificate" type="checkbox" id="HasCertificate">
+                            <span class="slider"></span>
+                        </label>
+                        <span>صدور گواهینامه</span>
+                        <span asp-validation-for="HasCertificate" class="error-text"></span>
+                    </div>
+                    <div class="form-group mt-10" id="passScoreWrapper">
+                        <label asp-for="PassScore">نمره قبولی <span id="star" class="required" style="display:none">*</span></label>
+                        <input asp-for="PassScore" type="number" class="custom-input text-center" />
+                        <span asp-validation-for="PassScore" class="error-text"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">ذخیره و ادامه</button>
+                <a asp-action="Index" class="btn-cancel">انصراف</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    
+    <script>
+               document.addEventListener("DOMContentLoaded", function() {
+            const hasCertCheckbox = document.getElementById('HasCertificate');
+            const star = document.getElementById('star');
+            const passScoreInput = document.querySelector('[name="PassScore"]');
+
+            function togglePassScore() {
+                if (hasCertCheckbox.checked) {
+                    star.style.display = 'inline';
+                    passScoreInput.style.borderColor = '#ed8936'; 
+                } else {
+                    star.style.display = 'none';
+                    passScoreInput.style.borderColor = '#ddd';
+                }
+            }
+
+            hasCertCheckbox.addEventListener('change', togglePassScore);
+            togglePassScore(); 
+        });
+    </script>
+}

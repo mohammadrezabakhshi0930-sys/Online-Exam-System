@@ -1,0 +1,89 @@
+﻿@model IEnumerable<CategoryShowDTO>
+@{
+    ViewBag.Title = "دسته بندی ها";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/Static/Css/Question.css" />
+}
+<div class="table-wrapper">
+    <div class="Div-TableItems">
+        <div class="table-header-1">
+            <h3>دسته بندی</h3>
+        </div>
+        <div class="table-header"> 
+            <div class="table-title"> دسته بندی ها</div>
+            <div class="actions-wrapper">
+                <input type="hidden" id="EditCategoryId" value="0" />
+
+                <input type="text" id="NameCategory" placeholder="نام دسته‌بندی جدید..." class="category-input" />
+
+                <button id="btnSubmitCategory" onclick="CreateCategory()" class="submit-btn-a">ایجاد دسته</button>
+
+                <button id="btnCancelEdit" onclick="CancelEdit()" class="submit-btn-a" style="display:none; background-color: #6c757d;">انصراف</button>
+                
+            </div>
+        </div>
+        <div id="body_Result">
+            <table>
+                <thead>
+                    <tr>
+                        <th> نام دسته بندی</th>
+                        <th>تاریخ ایجاد</th>
+                        <th> عملیات</th>
+                    </tr>
+                </thead>
+                
+                    <tbody>
+                    
+                        @foreach (CategoryShowDTO temp in Model)
+                        {
+                            <tr>
+                                <td data-label="نام دسته بندی " id="NameCategory-@temp.Id" title="@temp.CategoryName">@temp.CategoryName</td>
+                                <td data-label="تاریخ ایجاد" title="@temp.DateCreate">@temp.DateCreate.ToShortDateString()</td>
+                                <td data-label="عملیات">
+                                    <button onclick="EditCategory('@temp.Id')" class="submit-btn-a">ویرایش</button>
+                                    <button onclick="DeleteCategory('@temp.Id')" class="submit-btn-a">حذف</button>
+                                    <a href="~/Category/QuestionCategory/@temp.Id" class="submit-btn-a">سوالات دسته بندی</a>
+                                </td>
+                            </tr>
+                        }
+                        
+                    </tbody>
+                
+            </table>
+            <div class="pagination">
+                <button class="page-btn" onclick="ChangePage(@((ViewBag.Page) - 1),'~/Category/GetCategory')" aria-label="صفحه قبل">
+                    ‹
+                </button>
+
+                <div class="page-info">
+                    <span>@ViewBag.Page</span>
+                    <span class="divider">-</span>
+                    <span>@ViewBag.CountPage</span>
+                </div>
+
+                <button class="page-btn" onclick="ChangePage(@((ViewBag.Page) + 1),'~/Category/GetCategory')" aria-label="صفحه بعد">
+                    ›
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <p id="confirmText">آیا از حذف این دسته‌بندی اطمینان دارید؟</p>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 20px;">
+            <button type="button" onclick="ConfirmDelete()" class="closeModal" style="background: #c50000;">بله، حذف شود</button>
+            <button type="button" onclick="CloseConfirmModal()" class="closeModal" style="background: #6c757d;">خیر</button>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/Static/Js/Category.js"></script>
+}
+

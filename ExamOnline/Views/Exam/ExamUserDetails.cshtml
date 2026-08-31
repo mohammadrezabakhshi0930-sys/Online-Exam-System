@@ -1,0 +1,89 @@
+﻿@model ExamUsersDetailsDTO
+@{
+    ViewBag.Title = "جزئیات شرکت کننده";
+}
+@section Styles{
+    <link href="~/Static/Css/ExamUserDetails.css" rel="stylesheet" />
+}
+
+<div class="report-container">
+    <div class="report-header">
+        <h3><i class="fas fa-file-invoice"></i> جزئیات کارنامه آزمون</h3>
+        <p>@Model.ExamTitle</p>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-item">
+            <span class="label">نام دانشجو:</span>
+            <span class="value">@Model.FullName</span>
+        </div>
+        <div class="info-item">
+            <span class="label">زمان شروع:</span>
+            <span class="value" dir="ltr">@Model.StartTime</span>
+        </div>
+        <div class="info-item">
+            <span class="label">زمان پایان:</span>
+            <span class="value" dir="ltr">@Model.EndTime</span>
+        </div>
+        <div class="info-item">
+            <span class="label">نمره قبولی:</span>
+            <span class="value">@(Model.PassingScore > 0 ? Model.PassingScore.ToString() : "بدون حد نصاب")</span>
+        </div>
+    </div>
+
+    <div class="score-section @(Model.IsCorrected ? (Model.ObtainedScore >= Model.PassingScore ? "pass" : "fail") : "pending")">
+        <div class="score-box">
+            <span class="score-label">نمره نهایی کسب شده</span>
+            @if (Model.IsCorrected)
+            {
+                <h2 class="score-value">@Model.ObtainedScore <span>/ @Model.TotalScore</span></h2>
+                <div class="status-text">
+                    @(Model.ObtainedScore >= Model.PassingScore ? "وضعیت: قبول شده" : "وضعیت: مردود")
+                </div>
+            }
+            else
+            {
+                <h2 class="score-value text-orange">در حال تصحیح</h2>
+                <div class="status-text">منتظر ثبت نمره نهایی توسط استاد</div>
+            }
+        </div>
+    </div>
+
+    <h4 class="section-title">ریز نمرات و پاسخ‌ها</h4>
+
+    <div class="questions-list">
+        @if(Model.QouestionUser != null)
+        {
+            foreach (QuestionDetailsForExamDTO item in Model.QouestionUser)
+            {
+                <div class="question-card @(item.IsIsCorrected ? (item.AssignedScore > 0 ? "correct" : "wrong") : "waiting")">
+                    <div class="q-header">
+                        <span class="q-text">@item.Question</span>
+                        <div class="q-score">
+                            @if (item.IsIsCorrected)
+                            {
+                                <span class="score-badge">@item.AssignedScore از @item.MaxScore</span>
+                            }
+                            else
+                            {
+                                <span class="score-badge warning">در حال تصحیح</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="q-body">
+                        <div class="answer-row">
+                            <span class="ans-label">پاسخ دانشجو:</span>
+                            <div class="ans-value user-ans">@(string.IsNullOrEmpty(item.QuestionAnswerUser) ? "پاسخی ثبت نشده" : item.QuestionAnswerUser)</div>
+                        </div>
+                        <div class="answer-row">
+                            <span class="ans-label">پاسخ صحیح / راهنما:</span>
+                            <div class="ans-value correct-ans">@item.QuestionAnswer</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+       
+    </div>
+</div>

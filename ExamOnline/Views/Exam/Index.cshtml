@@ -1,0 +1,120 @@
+﻿@model IEnumerable<ExamShowDTO>
+@{
+    ViewBag.Title = "امتحانات";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/Static/Css/Question.css" />
+}
+<div class="table-wrapper">
+    <div class="Div-TableItems">
+        <div class="table-header-1">
+            <h3>امتحانات</h3>
+        </div>
+        <div class="table-header">
+            <div class="table-title"> امتحانات</div>                
+            <a href="/Exam/CreateExam" class="submit-btn-a">ایجاد امتحان</a>
+        </div>
+        <div id="body_Result">
+            <table>
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>نمره کل</th>
+                        <th>تاریخ ایجاد</th>
+                        <th>وضعیت</th>
+                        <th> تعیین سوالات</th>
+                        <th> عملیات</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (ExamShowDTO temp in Model)
+                    {
+                        <tr class="@(temp.Status == 1 ? "row-active" :(temp.Status == 2) ? "row-inactive":"row-donotstart")">
+                            <td data-label="عنوان" title="@temp.Title">@temp.Title</td>
+                            <td data-label="نمره کل" title="@temp.MaxScore">@temp.MaxScore</td>
+                            
+                            <td data-label="تاریخ ایجاد" title="@temp.DateCreate">@temp.DateCreate.ToShortDateString()</td>
+                            <td data-label="وضعیت" title="@temp.Status">@((temp.Status == 1)? "درحال برگزاری":(temp.Status == 2)?"تمام شده":"شروع نشده")</td>
+                            <td data-label=" تعیین سوالات" title="@temp.HaveQuestion">@((temp.HaveQuestion)? "انجام شده":"انجام نشده")</td>
+                            <td data-label="عملیات">
+
+                                <a href="/Exam/Details/@temp.Id" class="submit-btn-a">جزئیات</a>
+                                @if (temp.Status == 1)
+                                {
+                                    if (temp.HaveQuestion)
+                                    {
+                                        <button class="btn-copy-only" onclick="copyHiddenText(this, 'http://localhost:5238/Exam/StartExam/@temp.Id')">
+                                            <span>کپی لینک آزمون</span>
+                                        </button>
+                                    }
+                                }
+                                @if (temp.Status == 0)
+                                {
+                                    if (temp.HaveQuestion)
+                                    {
+                                        <button class="btn-copy-only" onclick="copyHiddenText(this, 'http://localhost:5238/Exam/StartExam/@temp.Id')">
+                                            <span>کپی لینک آزمون</span>
+                                        </button>
+                                    }
+                                    <a href="/ExamQuestions/Details/@temp.Id" class="submit-btn-a">تعیین سوالات</a>
+                                                                 
+                                    <a href="/Exam/EditExam/@temp.Id" class="submit-btn-a">ویرایش</a>
+                                    
+                                }
+                                @if(temp.Status == 2)
+                                {
+                                    <a href="/Exam/UserInExam/@temp.Id" class="submit-btn-a">شرکت کنندگان</a>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+            <div class="pagination">
+                <button class="page-btn" onclick="ChangePage(@((ViewBag.Page) - 1),'~/Exam/GetExam')" aria-label="صفحه قبل">
+                    ‹
+                </button>
+
+                <div class="page-info">
+                    <span>@ViewBag.Page</span>
+                    <span class="divider">-</span>
+                    <span>@ViewBag.CountPage</span>
+                </div>
+
+                <button class="page-btn" onclick="ChangePage(@((ViewBag.Page) + 1),'~/Exam/GetExam')" aria-label="صفحه بعد">
+                    ›
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+                function copyHiddenText(button, textToCopy) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const span = button.querySelector('span');
+                const originalText = span.innerText;
+
+                span.innerText = "کپی شد!";
+                button.classList.add("copied");
+
+                setTimeout(() => {
+                    span.innerText = originalText;
+                    button.classList.remove("copied");
+                }, 2000);
+            }).catch(err => {
+                console.error("خطا در کپی کردن متن:", err);
+            });
+        }
+    </script>
+}
+

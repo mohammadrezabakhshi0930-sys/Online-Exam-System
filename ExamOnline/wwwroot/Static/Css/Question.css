@@ -1,0 +1,303 @@
+﻿.table-wrapper {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin: 2rem auto;
+    max-width: 1200px;
+}
+
+.Div-TableItems {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-header-1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #f3f4f6;
+    border-bottom: 2px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+    .table-header-1 h3 {
+        margin: 0;
+        color: #1f2937;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f97316; 
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.table-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.submit-btn-a, .btn-copy-only {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.table-header .submit-btn-a {
+    background: #ffffff;
+    color: #f97316;
+}
+
+    .table-header .submit-btn-a:hover {
+        background: #fff5ed;
+    }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+    table thead {
+        background: #f3f4f6;
+    }
+
+    table th {
+        padding: 14px 16px;
+        font-weight: 700;
+        color: #374151;
+        font-size: 0.9rem;
+        border-bottom: 2px solid #e5e7eb;
+        text-align: center !important;
+    }
+
+    table td {
+        max-width: 160px; 
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+
+        padding: 14px 16px;
+        color: #4b5563;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #f3f4f6;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+        table td[data-label="عملیات"] {
+            max-width: none !important;
+            white-space: normal !important;
+            overflow: visible !important;
+        }
+
+    table tr.row-active {
+        background-color: #f0fdf4; 
+    }
+
+    table tr.row-inactive {
+        background-color: #f9fafb; 
+    }
+
+    table tr.row-donotstart {
+        background-color: #fffbeb; 
+    }
+
+    table tr:hover {
+        background-color: #f1f5f9;
+    }
+
+    table td[data-label="عملیات"] {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        max-width: none;
+    }
+
+    table td .submit-btn-a {
+        background: #3b82f6; 
+        color: #ffffff;
+    }
+
+        table td .submit-btn-a:hover {
+            background: #2563eb;
+        }
+
+    table td .btn-copy-only {
+        background: #10b981; 
+        color: #ffffff;
+    }
+
+        table td .btn-copy-only:hover {
+            background: #059669;
+        }
+
+@media (max-width: 768px) {
+    .table-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        text-align: center;
+    }
+
+    table thead {
+        display: none; 
+    }
+
+    table tr {
+        display: block;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        background: #ffffff !important; 
+        padding: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed #f3f4f6;
+        padding: 10px 8px;
+        max-width: none;
+        text-align: right !important;
+    }
+
+        table td:last-child {
+            border-bottom: none;
+        }
+
+        table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #374151;
+            margin-left: 8px;
+        }
+
+        table td[data-label="عملیات"] {
+            flex-direction: row;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+            table td[data-label="عملیات"]::before {
+                display: block;
+                width: 100%;
+                margin-bottom: 6px;
+            }
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+.page-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #374151;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .page-btn:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+    }
+
+.page-info {
+    font-size: 0.9rem;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.category-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    min-width: 200px;
+    flex: 1;
+}
+
+    .category-input:focus {
+        border-color: #007BFF;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    }
+
+
+.submit-btn-a {
+    padding: 10px 20px;
+    white-space: nowrap;
+    width: auto;
+    text-decoration: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    max-width: 280px;
+    text-align: center;
+}
+.btn-copy-only {
+    background-color: #4361ee;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: Tahoma, sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.1s;
+    outline: none;
+}
+
+    .btn-copy-only:hover {
+        background-color: #3046bc;
+    }
+
+    .btn-copy-only.copied {
+        background-color: #2ec4b6;
+    }
+
